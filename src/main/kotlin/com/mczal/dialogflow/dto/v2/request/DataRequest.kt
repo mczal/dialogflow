@@ -1,4 +1,4 @@
-package com.mczal.dialogflow.dto.request
+package com.mczal.dialogflow.dto.v2.request
 
 data class DataRequest(
   var session: String = "",

@@ -1,9 +1,7 @@
 package com.mczal.dialogflow.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.mczal.dialogflow.dto.request.DataRequest
-import com.mczal.dialogflow.dto.response.DataResponse
-import com.mczal.dialogflow.dto.response.fulfillment.FulfillmentText
+import com.mczal.dialogflow.dto.v1.response.SimpleResponse
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -26,15 +24,14 @@ class ApiController {
     consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces= [MediaType.APPLICATION_JSON_VALUE]
   )
-  fun handleRequest(@RequestBody content: DataRequest): ResponseEntity<DataResponse>{
+  fun handleRequest(@RequestBody content: Any): ResponseEntity<SimpleResponse>{
     logger.warn(">>>>> content request: ${jacksonMapper.writeValueAsString(content)}")
 
+    val response = "This is a sample response from your webhook!"
     return ResponseEntity.ok(
-      DataResponse(
-        fulfillmentText = "This Is Fulfillment Text",
-        fulfillmentMessages = FulfillmentText(text = listOf("List 1","List 2")),
-        payload = "Payload",
-        source = "Source"
+      SimpleResponse(
+        speech = response,
+        displayText = response
       )
     )
   }

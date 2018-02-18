@@ -1,6 +1,6 @@
-package com.mczal.dialogflow.dto.response
+package com.mczal.dialogflow.dto.v2.response
 
-import com.mczal.dialogflow.dto.response.fulfillment.FulfillmentText
+import com.mczal.dialogflow.dto.v2.response.fulfillment.FulfillmentText
 
 data class DataResponse(
   var fulfillmentText: String = "",
