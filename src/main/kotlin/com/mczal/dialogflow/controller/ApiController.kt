@@ -1,8 +1,11 @@
 package com.mczal.dialogflow.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.mczal.dialogflow.dto.v1.request.ParamsParent
 import com.mczal.dialogflow.dto.v1.request.SimpleRequest
+import com.mczal.dialogflow.dto.v1.request.WeatherParams
 import com.mczal.dialogflow.dto.v1.response.SimpleResponse
+import com.mczal.dialogflow.model.Intent
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.MediaType
@@ -25,16 +28,38 @@ class ApiController {
     consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces= [MediaType.APPLICATION_JSON_VALUE]
   )
-  fun handleRequest(@RequestBody content: SimpleRequest<Any>): ResponseEntity<SimpleResponse>{
+  fun handleRequest(@RequestBody content: SimpleRequest): ResponseEntity<SimpleResponse>{
     logger.warn(">>>>> content request: ${jacksonMapper.writeValueAsString(content)}")
 
-    val response = "This is a sample response from your webhook!"
+    val paramValues = getParameterValues(
+      content.getIntentName(),
+      content.getParameters()
+    )
+
+    val stringifiedParams = paramValues.map { entry ->
+      "${entry.key} = ${entry.value}"
+    }.joinToString(", ")
+
+    val response = "The weather for $stringifiedParams is MCZAL"
     return ResponseEntity.ok(
       SimpleResponse(
         speech = response,
         displayText = response
       )
     )
+  }
+
+  fun getParameterValues(intent: String, parameters: ParamsParent): Map<String, String>{
+    when (intent) {
+      Intent.WEATHER.member -> {
+        val weatherParams = parameters as WeatherParams
+        return mapOf(
+          Pair("date", weatherParams.date),
+          Pair("geo-city", weatherParams.geo_city)
+        )
+      }
+      else -> return emptyMap()
+    }
   }
 
 }
