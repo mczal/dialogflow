@@ -7,7 +7,7 @@ data class SimpleRequest<P>(
   var id: String = "",
   var timestamp: Date? = null,
   var lang: String = "",
-  var result: P? = null,
+  var result: Result<P>? = null,
   var status: Status? = null,
   var sessionId: String = ""
 )
@@ -18,7 +18,7 @@ data class Status(
   var webhookTimedOut: Boolean = false
 )
 
-private data class Result<P>(
+data class Result<P>(
   var source: String = "",
   var resolvedQuery: String = "",
   var speech: String = "",
@@ -31,19 +31,19 @@ private data class Result<P>(
   var score: Double = 0.0
 )
 
-private data class Metadata(
+data class Metadata(
   var intentId: String = "",
   var webhookUsed: Boolean = false,
   var webhookForSlotFillingUsed: Boolean = false,
   var intentName: String = ""
 )
 
-private data class Fulfillment(
+data class Fulfillment(
   var speech: String = "",
   var messages: List<Message> = ArrayList()
 )
 
-private data class Message(
+data class Message(
   var type: Int = 0,
   var speech: String = ""
 )
