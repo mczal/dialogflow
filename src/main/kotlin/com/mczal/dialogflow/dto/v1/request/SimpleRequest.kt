@@ -1,5 +1,6 @@
 package com.mczal.dialogflow.dto.v1.request
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -16,8 +17,12 @@ data class SimpleRequest(
     return result.metadata.intentName
   }
 
-  fun getParameters(): ParamsParent{
-    return result.parameters
+  fun getParameters(): String{
+    return mapper().writeValueAsString(result.parameters)
+  }
+
+  private fun mapper(): ObjectMapper{
+    return ObjectMapper()
   }
 
 }
@@ -34,7 +39,7 @@ data class Result(
   var speech: String = "",
   var action: String = "",
   var actionIncomplete: Boolean = true,
-  var parameters: ParamsParent = ParamsParent(),
+  var parameters: Any = Any(),
   var contexts: Any? = null,
   var metadata: Metadata = Metadata(),
   var fulfillment: Fulfillment = Fulfillment(),

@@ -1,7 +1,6 @@
 package com.mczal.dialogflow.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.mczal.dialogflow.dto.v1.request.ParamsParent
 import com.mczal.dialogflow.dto.v1.request.SimpleRequest
 import com.mczal.dialogflow.dto.v1.request.WeatherParams
 import com.mczal.dialogflow.dto.v1.response.SimpleResponse
@@ -30,6 +29,7 @@ class ApiController {
   )
   fun handleRequest(@RequestBody content: SimpleRequest): ResponseEntity<SimpleResponse>{
     logger.warn(">>>>> content request: ${jacksonMapper.writeValueAsString(content)}")
+    logger.warn(">>>>> content parameter: ${content.getParameters()}")
 
     val paramValues = getParameterValues(
       content.getIntentName(),
@@ -49,10 +49,10 @@ class ApiController {
     )
   }
 
-  fun getParameterValues(intent: String, parameters: ParamsParent): Map<String, String>{
+  fun getParameterValues(intent: String, parameters: String): Map<String, String>{
     when (intent) {
       Intent.WEATHER.member -> {
-        val weatherParams = parameters as WeatherParams
+        val weatherParams = jacksonMapper.readValue(parameters, WeatherParams::class.java)
         return mapOf(
           Pair("date", weatherParams.date),
           Pair("geo-city", weatherParams.geo_city)
