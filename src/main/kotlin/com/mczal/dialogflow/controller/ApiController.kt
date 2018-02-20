@@ -28,20 +28,18 @@ class ApiController {
     consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces= [MediaType.APPLICATION_JSON_VALUE]
   )
-  fun handleRequest(@RequestBody content: SimpleRequest): ResponseEntity<SimpleResponse>{
-    logger.warn(">>>>> content request: ${jacksonMapper.writeValueAsString(content)}")
-    logger.warn(">>>>> content parameter: ${content.getParameters()}")
+  fun requestHandler(@RequestBody request: SimpleRequest): ResponseEntity<SimpleResponse>{
+    logger.warn(">>>>> request request: ${jacksonMapper.writeValueAsString(request)}")
+    logger.warn(">>>>> request parameter: ${request.getParameters()}")
 
     val paramValues = getParameterValues(
-      content.getIntentName(),
-      content.getParameters()
+      request.getIntentName(),
+      request.getParameters()
     )
 
-    val stringifiedParams = paramValues.map { entry ->
-      "${entry.key} = ${entry.value}"
-    }.joinToString(", ")
+    val stringifiedParams = transformParamToString(paramValues)
 
-    val response = "The ${content.getIntentName()} for $stringifiedParams is DUMMY_DATA"
+    val response = "The ${request.getIntentName()} for $stringifiedParams is DUMMY_DATA"
     return ResponseEntity.ok(
       SimpleResponse(
         speech = response,
@@ -50,7 +48,7 @@ class ApiController {
     )
   }
 
-  fun getParameterValues(intent: String, parameters: String): Map<String, String>{
+  private fun getParameterValues(intent: String, parameters: String): Map<String, String>{
     when (intent) {
       Intent.WEATHER.member -> {
         val weatherParams = WeatherParams()
@@ -66,6 +64,12 @@ class ApiController {
       }
       else -> return emptyMap()
     }
+  }
+
+  private fun transformParamToString(params: Map<String, String>): String{
+    return params.map { entry ->
+      "${entry.key} = ${entry.value}"
+    }.joinToString(", ")
   }
 
 }
