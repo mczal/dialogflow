@@ -1,6 +1,7 @@
 package com.mczal.dialogflow.controller
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.mczal.dialogflow.dto.v1.request.HeadlineParams
 import com.mczal.dialogflow.dto.v1.request.SimpleRequest
 import com.mczal.dialogflow.dto.v1.request.WeatherParams
 import com.mczal.dialogflow.dto.v1.response.SimpleResponse
@@ -40,7 +41,7 @@ class ApiController {
       "${entry.key} = ${entry.value}"
     }.joinToString(", ")
 
-    val response = "The weather for $stringifiedParams is MCZAL"
+    val response = "The ${content.getIntentName()} for $stringifiedParams is DUMMY_DATA"
     return ResponseEntity.ok(
       SimpleResponse(
         speech = response,
@@ -52,11 +53,16 @@ class ApiController {
   fun getParameterValues(intent: String, parameters: String): Map<String, String>{
     when (intent) {
       Intent.WEATHER.member -> {
-        val weatherParams = jacksonMapper.readValue(parameters, WeatherParams::class.java)
-        return mapOf(
-          Pair("date", weatherParams.date),
-          Pair("geo-city", weatherParams.geo_city)
-        )
+        val weatherParams = WeatherParams()
+        return weatherParams.getMappedParams(parameters)
+      }
+      Intent.HEADLINE.member -> {
+        val headlineParams = HeadlineParams()
+        return headlineParams.getMappedParams(parameters)
+      }
+      Intent.BERITA.member -> {
+        val beritaParams = HeadlineParams()
+        return beritaParams.getMappedParams(parameters)
       }
       else -> return emptyMap()
     }
