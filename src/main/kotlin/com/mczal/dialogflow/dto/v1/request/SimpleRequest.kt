@@ -4,11 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import java.util.*
 import kotlin.collections.ArrayList
 
-data class SimpleRequest(
+data class SimpleRequest<T>(
   var id: String = "",
   var timestamp: Date? = null,
   var lang: String = "",
-  var result: Result = Result(),
+  var result: Result<T> = Result(),
   var status: Status = Status(),
   var sessionId: String = ""
 ){
@@ -33,14 +33,14 @@ data class Status(
   var webhookTimedOut: Boolean = false
 )
 
-data class Result(
+data class Result<T>(
   var source: String = "",
   var resolvedQuery: String = "",
   var speech: String = "",
   var action: String = "",
   var actionIncomplete: Boolean = true,
   var parameters: Any = Any(),
-  var contexts: Any? = null,
+  var contexts: List<T> = ArrayList(),
   var metadata: Metadata = Metadata(),
   var fulfillment: Fulfillment = Fulfillment(),
   var score: Double = 0.0

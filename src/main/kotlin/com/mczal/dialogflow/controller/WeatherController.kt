@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/api/dialogflow")
-class ApiController {
+class WeatherController {
 
   private val logger = LoggerFactory.getLogger(this::class.java)
 
@@ -28,7 +28,7 @@ class ApiController {
     consumes = [MediaType.APPLICATION_JSON_VALUE],
     produces= [MediaType.APPLICATION_JSON_VALUE]
   )
-  fun requestHandler(@RequestBody request: SimpleRequest): ResponseEntity<SimpleResponse>{
+  fun requestHandler(@RequestBody request: SimpleRequest<Any>): ResponseEntity<SimpleResponse>{
     logger.warn(">>>>> request request: ${jacksonMapper.writeValueAsString(request)}")
     logger.warn(">>>>> request parameter: ${request.getParameters()}")
 
