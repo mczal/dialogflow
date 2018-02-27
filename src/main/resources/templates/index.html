@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Mczal Shop</title>
+
+  <link rel="stylesheet" media="screen" th:href="@{main.css}" />
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="header__content">
+      Orders
+    </div>
+    <div class="header__title">
+      Mczal Shop
+    </div>
+  </div>
+  <div class="body">
+    <div class="body__content">
+      <table>
+        <thead>
+        <tr>
+          <th>Id</th>
+          <th>Number</th>
+          <th>Flavour</th>
+          <th>Size</th>
+          <th>Payment</th>
+          <th>Session-Id</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order: ${orders}">
+          <td th:text="${order.id}"></td>
+          <td th:text="${order.orderNumber}"></td>
+          <td th:text="${order.flavour}"></td>
+          <td th:text="${order.size}"></td>
+          <td th:text="${order.paymentMethod}"></td>
+          <td th:text="${order.sessionId}"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+</html>

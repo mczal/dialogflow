@@ -22,6 +22,11 @@ class OrderServiceimpl: OrderService {
   }
 
   private fun generateOrderNumber(sessionId: String): String {
-    return "${Date().time}|$sessionId"
+    return "INV-${Date().time}"
   }
+
+  override fun listAll(): List<Order> {
+    return orderRepository.findAll()
+  }
+
 }

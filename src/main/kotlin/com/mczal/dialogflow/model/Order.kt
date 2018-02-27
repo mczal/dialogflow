@@ -1,15 +1,13 @@
 package com.mczal.dialogflow.model
 
-import javax.persistence.Column
-import javax.persistence.Entity
-import javax.persistence.Id
-import javax.persistence.Table
+import javax.persistence.*
 
 @Entity
 @Table(name = "`order`")
 data class Order(
 
   @Id
+  @GeneratedValue
   var id: Int = 0,
 
   @Column(name = "sessionId")
